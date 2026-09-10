@@ -18,6 +18,9 @@ global using System.Runtime.CompilerServices;
  * Importing both at once may require you to define aliases to resolve ambiguous types.
  */
 
+global using FhGCall = Fahrenheit.FhCall;
+global using FhXCall = Fahrenheit.FFX.FhCall;
+
 global using Fahrenheit.FFX;
 global using Fahrenheit.Atel;
 global using Fahrenheit.FFX.Ids;
