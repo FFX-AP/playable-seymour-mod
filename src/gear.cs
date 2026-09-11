@@ -465,6 +465,7 @@ public unsafe partial class SeymourModule : FhModule {
         Equipment* pEVar2;
         int iVar3;
         byte* local_8;
+        int index;
 
         iVar1 = _FUN_008c1ba0.fnptr!();
         iVar3 = 0;
@@ -473,7 +474,7 @@ public unsafe partial class SeymourModule : FhModule {
             do {
                 pEVar2 = FhXCall.MsGetSaveWeapon.fnptr!(p_TkMenuItemData_ARRAY_01597730[iVar3].item_id, (nint)(&local_8));
                 if (pEVar2->owner < 8) {
-                    int index = (pEVar2->type != 0 ? 1 : 0) + pEVar2->owner * 2;
+                    index = (pEVar2->type != 0 ? 1 : 0) + pEVar2->owner * 2;
                     character_gear_count[index] = character_gear_count[index] + 1;
                 }
                 iVar3 = iVar3 + 1;
@@ -580,6 +581,9 @@ public unsafe partial class SeymourModule : FhModule {
         int local_410;
         byte local_409;
         byte* local_408 = stackalloc byte[1024];
+        int chr_id;
+        int weapon_count;
+        int armor_count;
 
         iVar1 = _FUN_008c1ba0.fnptr!();
         iVar4 = 0;
@@ -592,10 +596,10 @@ public unsafe partial class SeymourModule : FhModule {
             } while (iVar4 < iVar1);
         }
         local_410 = 0;
-        int chr_id = 0;
+        chr_id = 0;
         do {
-            int weapon_count = character_gear_count[chr_id * 2];
-            int armor_count = character_gear_count[chr_id * 2 + 1];
+            weapon_count = character_gear_count[chr_id * 2];
+            armor_count = character_gear_count[chr_id * 2 + 1];
             uVar3 = (uint)weapon_count;
             iVar1 = (int)(local_410 + -1 + uVar3);
             iVar4 = 0;

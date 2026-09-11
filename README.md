@@ -4,14 +4,14 @@ This mod features modded files to be used in conjunction with [Fahrenheit](https
 
 ### This mod must be played for the first time on a brand new save file. Loading pre-existing saves from before this mods installation can lead to issues like Seymour not being playable on those files.
 
-### Prerequisites:
+# Prerequisites:
 This mod entirely depends on the following works:
 - [VBF Browser](https://www.nexusmods.com/finalfantasy12/mods/3)
 - [xDelta3](https://github.com/jmacd/xdelta-gpl)
 - [Fahrenheit](https://github.com/fahrenheit-crew/fahrenheit) v1.0.0-alpha11
 - [custom-character](https://github.com/Rurusachi/custom-character)
 
-### Installation:
+# Installation:
 For the sake of conserving disk space, extract only the following files from the `FFX_Data` folder:
 ```
 menu/abmap/dat00/D3D11/lines
@@ -29,7 +29,7 @@ menu_us/D3D11/icon
 
 (Once the installation is completed, you can also delete the `FFX_Data` and `ffx_ps2` folders from the `\original` folder to conserve disk space.)
 
-### Features
+# Features
 This mod makes Seymour his own, standalone, 8th party member. 
 - Access to the Sphere Grid (though he doesn't *currently* have his own path) - Special thanks to Rurusachi
 - His own Weapons and Armors, called "Scepters" and "Circlets" respectively, from shops and enemy drops
@@ -39,20 +39,20 @@ This mod makes Seymour his own, standalone, 8th party member.
 
 Naturally, Seymour is capable of wielding both black and white magic, following Lulu's path on both Standard and Expert Sphere Grids by default. With this in mind, his base stats are slightly adjusted compared to the vanilla game, so he and Lulu can both be powerful black mages respectively and not *completely* overpower one or another.
 
-### Summoning
+# Summoning
 Seymour comes with a second Overdrive alongside Requiem - the ability to summon Anima (and only Anima) immediately after he's recruited following his appearance in the second Sinspawn Gui battle (though she's not able to be summoned for that particular battle).
 - Requiem and Anima have both been rebalanced, with Requiem now being far more powerful, and Anima's stats being slightly less overpowered early on (given that she joins the party much earlier), making it a genuine strategic decision to choose between the two for an Overdrive.
 - Anima's stats now scale with Seymour's stats instead of Yuna's. Be sure to level him on the Sphere Grid if you want Anima to grow in strength. Yuna and the other Aeons remain untouched, and scale as usual according to her stats.
 - Despite Seymour being able to summon Anima as soon as he is recruited, Yuna retains base game behaviour and cannot summon her until the Baaj Temple sidequest is completed. If the player doesn't complete it, Seymour remains the only character able to summon her. Once the sidequest is cleared, both Yuna and Seymour can summon Anima as usual, but her stats still only scale off of Seymour's.
 
-### Additional Improvements:
+# Additional Improvements:
 Optional, but recommended additions that improve quality of life:
 - My [Requiem Fix](https://www.nexusmods.com/finalfantasyxx2hdremaster/mods/266) to fix Seymour's Overdrive Requiem's camera angling in battles outside of the Sinspawn Gui encounter.
 
-### Final Notes:
+# Final Notes:
 The mod is still a work in progress. There are still things to be addressed, like equipment sorting and abilities that cause softlocks. The mod in its current state is entirely playable, start to finish. Of course, if you find any bugs, please raise an issue here.
 
-### Made possible thanks to:
+# Made possible thanks to:
 - **[VBF Browser](https://www.nexusmods.com/finalfantasy12/mods/3):** Topher, ffgriever and Vaan
 - **[Fahrenheit](https://github.com/fahrenheit-crew/fahrenheit):** The Fahrenheit Crew
 - **[custom-character](https://github.com/Rurusachi/custom-character):** Rurusachi, for the Sphere Grid work included in this mod to feature Seymour on the grid.
