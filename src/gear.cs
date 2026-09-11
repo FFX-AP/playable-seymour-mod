@@ -215,6 +215,31 @@ public unsafe partial class SeymourModule : FhModule {
 
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void FUN_008c94b0();
+    private static FhMethodHandle<FUN_008c94b0> _FUN_008c94b0
+        => new ( new FhMethodLocation("FFX.exe", 0x4C94B0) );
+    public int[] character_gear_count = new int[16];
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void FUN_008c9bc0();
+    private static FhMethodHandle<FUN_008c9bc0> _FUN_008c9bc0
+        => new ( new FhMethodLocation("FFX.exe", 0x4C9BC0) );
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int FUN_008c9f80();
+    private static FhMethodHandle<FUN_008c9f80> _FUN_008c9f80
+        => new ( new FhMethodLocation("FFX.exe", 0x4C9F80) );
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int FUN_008ca180();
+    private static FhMethodHandle<FUN_008ca180> _FUN_008ca180
+        => new ( new FhMethodLocation("FFX.exe", 0x4CA180) );
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     [return: MarshalAs(UnmanagedType.U1)]
     public delegate bool FUN_00635c20(uint param_1);
     private static FhMethodHandle<FUN_00635c20> _FUN_00635c20
@@ -432,6 +457,172 @@ public unsafe partial class SeymourModule : FhModule {
             } while (type < 2);
         }
         return;
+    }
+
+    // Sort Seymour's Gear in Inventory
+    void h_FUN_008c94b0() {
+        int iVar1;
+        Equipment* pEVar2;
+        int iVar3;
+        byte* local_8;
+
+        iVar1 = _FUN_008c1ba0.fnptr!();
+        iVar3 = 0;
+        Array.Clear(character_gear_count, 0, character_gear_count.Length);
+        if (0 < iVar1) {
+            do {
+                pEVar2 = FhXCall.MsGetSaveWeapon.fnptr!(p_TkMenuItemData_ARRAY_01597730[iVar3].item_id, (nint)(&local_8));
+                if (pEVar2->owner < 8) {
+                    int index = (pEVar2->type != 0 ? 1 : 0) + pEVar2->owner * 2;
+                    character_gear_count[index] = character_gear_count[index] + 1;
+                }
+                iVar3 = iVar3 + 1;
+            } while (iVar3 < iVar1);
+        }
+        return;
+    }
+
+    void h_FUN_008c9bc0() {
+        ushort uVar1;
+        int iVar2;
+        int puVar3;
+        int local_8;
+
+        iVar2 = 0;
+        puVar3 = 0;
+        do {
+            local_8 = 2;
+            do {
+                uVar1 = (ushort)character_gear_count[puVar3];
+                _FUN_008c9c10.fnptr!((int)p_TkMenuItemData_ARRAY_01597730, iVar2, uVar1);
+                iVar2 = (int)(iVar2 + (uint)uVar1);
+                puVar3 = puVar3 + 1;
+                local_8 = local_8 + -1;
+            } while (local_8 != 0);
+        } while (puVar3 < 16);
+        return;
+    }
+
+    int h_FUN_008c9f80() {
+        int iVar1;
+        Equipment* pEVar2;
+        int iVar3;
+        TkMenuItemData* pTVar4;
+        int iVar5;
+        int iVar6;
+        uint uVar7;
+        byte* local_424;
+        int local_420;
+        int local_41c;
+        int local_418;
+        int local_414;
+        uint local_410;
+        byte* local_40c;
+        byte* local_408 = stackalloc byte[1024];
+
+        local_40c = (byte*)0x0;
+        iVar1 = _FUN_008c1ba0.fnptr!();
+        iVar3 = 0;
+        local_418 = iVar1;
+        if (0 < iVar1) {
+            do {
+                pEVar2 = FhXCall.MsGetSaveWeapon.fnptr!(p_TkMenuItemData_ARRAY_01597730[iVar3].item_id, (nint)(&local_424));
+                iVar5 = iVar3 + 1;
+                local_408[iVar3] = pEVar2->owner;
+                iVar3 = iVar5;
+            } while (iVar5 < iVar1);
+        }
+        uVar7 = 0;
+        iVar3 = 0;
+        do {
+            iVar5 = (int)((uint)character_gear_count[(int)(uVar7 * 2 + 1)] + (uint)character_gear_count[(int)(uVar7 * 2)]);
+            iVar6 = 0;
+            local_414 = iVar5 + iVar3;
+            iVar1 = local_414 + -1;
+            if (iVar5 != 0) {
+                pTVar4 = p_TkMenuItemData_ARRAY_01597730 + iVar3;
+                local_40c = local_408 + (int)local_40c;
+                local_420 = iVar5;
+                do {
+                    local_410 = local_40c[iVar6];
+                    if (local_410 != uVar7) {
+                        local_41c = _FUN_008c9b90.fnptr!(local_408, (byte)uVar7, iVar1 + 1, local_418);
+                        if (local_41c < 0) {
+                            return 0;
+                        }
+                        _FUN_007aba10.fnptr!(pTVar4->item_id, p_TkMenuItemData_ARRAY_01597730[local_41c].item_id);
+                        local_40c[iVar6] = local_408[local_41c];
+                        local_408[local_41c] = (byte)local_410;
+                        iVar1 = local_41c;
+                        iVar5 = local_420;
+                    }
+                    iVar6 = iVar6 + 1;
+                    pTVar4 = pTVar4 + 1;
+                } while (iVar6 < iVar5);
+            }
+            uVar7 = uVar7 + 1;
+            iVar3 = local_414;
+            local_40c = (byte*)local_414;
+        } while ((int)uVar7 < 8);
+        return 1;
+    }
+
+    int h_FUN_008ca180() {
+        int iVar1;
+        Equipment* pEVar2;
+        uint uVar3;
+        int iVar4;
+        TkMenuItemData* pTVar5;
+        byte* local_424;
+        int local_420;
+        uint local_41c;
+        byte* local_418;
+        int local_410;
+        byte local_409;
+        byte* local_408 = stackalloc byte[1024];
+
+        iVar1 = _FUN_008c1ba0.fnptr!();
+        iVar4 = 0;
+        local_420 = iVar1;
+        if (0 < iVar1) {
+            do {
+                pEVar2 = FhXCall.MsGetSaveWeapon.fnptr!(p_TkMenuItemData_ARRAY_01597730[iVar4].item_id, (nint)(&local_424));
+                local_408[iVar4] = (byte)(pEVar2->type != 0 ? 1 : 0);
+                iVar4 = iVar4 + 1;
+            } while (iVar4 < iVar1);
+        }
+        local_410 = 0;
+        int chr_id = 0;
+        do {
+            int weapon_count = character_gear_count[chr_id * 2];
+            int armor_count = character_gear_count[chr_id * 2 + 1];
+            uVar3 = (uint)weapon_count;
+            iVar1 = (int)(local_410 + -1 + uVar3);
+            iVar4 = 0;
+            if (uVar3 != 0) {
+                pTVar5 = p_TkMenuItemData_ARRAY_01597730 + local_410;
+                local_418 = local_408 + local_410;
+                local_41c = uVar3;
+                do {
+                    local_409 = local_418[iVar4];
+                    if (local_409 != 0) {
+                        iVar1 = _FUN_008c9b90.fnptr!(local_408, 0, iVar1 + 1, local_420);
+                        if (iVar1 < 0) {
+                            return 0;
+                        }
+                        _FUN_007aba10.fnptr!(pTVar5->item_id, p_TkMenuItemData_ARRAY_01597730[iVar1].item_id);
+                        local_418[iVar4] = local_408[iVar1];
+                        local_408[iVar1] = local_409;
+                        uVar3 = local_41c;
+                    }
+                    iVar4 = iVar4 + 1;
+                    pTVar5 = pTVar5 + 1;
+                } while (iVar4 < (int)uVar3);
+            }
+            local_410 = (int)(local_410 + armor_count + uVar3);
+            chr_id++;
+        } while (chr_id < 8);
+        return 1;
     }
 
     // Show Seymour's Armor Model

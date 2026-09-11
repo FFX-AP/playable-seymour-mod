@@ -72,4 +72,28 @@ public unsafe partial class SeymourModule : FhModule {
         public byte accuracy;
         public AbilityMap abmap;
     }
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int FUN_008c1ba0(); // Unofficial name idea: MsGetInventoryGearCount ?
+    private static FhMethodHandle<FUN_008c1ba0> _FUN_008c1ba0
+        => new ( new FhMethodLocation("FFX.exe", 0x4C1BA0) );
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void FUN_008c9c10(int param_1, int param_2, int param_3);
+    private static FhMethodHandle<FUN_008c9c10> _FUN_008c9c10
+        => new ( new FhMethodLocation("FFX.exe", 0x4C9C10) );
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int FUN_008c9b90(byte* param_1, int param_2, int param_3, int param_4);
+    private static FhMethodHandle<FUN_008c9b90> _FUN_008c9b90
+        => new ( new FhMethodLocation("FFX.exe", 0x4C9B90) );
+
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate int FUN_007aba10(uint param_1, uint param_2);
+    private static FhMethodHandle<FUN_007aba10> _FUN_007aba10
+        => new ( new FhMethodLocation("FFX.exe", 0x3ABA10) );
 }
