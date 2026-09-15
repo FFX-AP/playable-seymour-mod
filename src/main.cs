@@ -69,9 +69,9 @@ public unsafe partial class SeymourModule : FhModule {
             && FhXCall.MsParseCommand              .hook(this, h_MsParseCommand)
             && FhXCall.TOBtlCtrlHelpWin            .hook(this, h_TOBtlCtrlHelpWin)
             && FhXCall.TOGetSaveWindow             .hook(this, h_TOGetSaveWindow)
-            && FhXCall.TkMenuSummonEnableMask      .hook(this, h_TkMenuSummonEnableMask)
-            && FhXCall.MsSetSaveParam              .hook(this, h_MsSetSaveParam)
-            && FhXCall.MsGetChrAbilityMap          .hook(this, h_MsGetChrAbilityMap);
+            // && FhXCall.TkMenuSummonEnableMask      .hook(this, h_TkMenuSummonEnableMask)
+            // && FhXCall.MsSetSaveParam              .hook(this, h_MsSetSaveParam)
+            // && FhXCall.MsGetChrAbilityMap          .hook(this, h_MsGetChrAbilityMap);
     }
     public override void load_local_state(FileStream? local_state_file, FhLocalStateInfo local_state_info) { }
     public override void save_local_state(FileStream local_state_file)                                     { }
