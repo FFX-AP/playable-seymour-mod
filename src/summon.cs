@@ -89,22 +89,6 @@ public unsafe partial class SeymourModule : FhModule {
         if ((uint)window_type == 5) {
             ushort* originallist = _TOGetSaveWindow.chain_from(h_TOGetSaveWindow).fnptr!(chr_id, window_type, out_length);
             Span<ushort> listSpan = new(originallist, *out_length);
-            if (chr_id == 1) {
-                if (!Globals.save_data->has_anima && listSpan.Contains<ushort>(PlySaveId.PC_ANIMA)) {
-                    int new_length = 0;
-                    for (int i = 0; i < *out_length; i++) {
-                        if (listSpan[i] != PlySaveId.PC_ANIMA) {
-                            listSpan[new_length] = listSpan[i];
-                            new_length++;
-                        }
-                    }
-                    for (int i = new_length; i < *out_length; i++) {
-                        listSpan[i] = 0xFFFF;
-                    }
-                    *out_length = new_length;
-                }
-                return originallist;
-            }
             if (chr_id == 7) {
                 if (listSpan.Contains<ushort>(PlySaveId.PC_ANIMA)) {
                     listSpan.Fill(0xFFFF);

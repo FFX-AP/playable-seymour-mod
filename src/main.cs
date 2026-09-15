@@ -94,10 +94,10 @@ public unsafe partial class SeymourModule : FhModule {
             && _MsLimitTypeWinCheck             .hook(this, h_MsLimitTypeWinCheck)
             && _MsParseCommand                  .hook(this, h_MsParseCommand)
             && _TOBtlCtrlHelpWin                .hook(this, h_TOBtlCtrlHelpWin)
-            && _TOGetSaveWindow                 .hook(this, h_TOGetSaveWindow)
-            && _TkMenuSummonEnableMask          .hook(this, h_TkMenuSummonEnableMask)
-            && _MsSetSaveParam                  .hook(this, h_MsSetSaveParam)
-            && _MsGetChrAbilityMap              .hook(this, h_MsGetChrAbilityMap);
+            && _TOGetSaveWindow                 .hook(this, h_TOGetSaveWindow);
+            // && _TkMenuSummonEnableMask          .hook(this, h_TkMenuSummonEnableMask)
+            // && _MsSetSaveParam                  .hook(this, h_MsSetSaveParam)
+            // && _MsGetChrAbilityMap              .hook(this, h_MsGetChrAbilityMap);
     }
     public override void load_local_state(FileStream? local_state_file, FhLocalStateInfo local_state_info) { }
     public override void save_local_state(FileStream local_state_file)                                     { }
