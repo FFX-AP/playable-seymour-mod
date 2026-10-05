@@ -8,7 +8,7 @@ This mod features modded files to be used in conjunction with [Fahrenheit](https
 This mod entirely depends on the following works:
 - [VBF Browser](https://www.nexusmods.com/finalfantasy12/mods/3)
 - [xDelta3](https://github.com/jmacd/xdelta-gpl)
-- [Fahrenheit](https://github.com/fahrenheit-crew/fahrenheit) v1.0.0-alpha11
+- [Fahrenheit](https://github.com/fahrenheit-crew/fahrenheit) v1.0.0-alpha12
 - [custom-character](https://github.com/Rurusachi/custom-character)
 
 # Installation:
@@ -17,7 +17,7 @@ For the sake of conserving disk space, extract only the following files from the
 menu/abmap/dat00/D3D11/lines
 menu/abmap/dat12/D3D11/lines
 menu/D3D11/face_ply
-menu_us/D3D11/icon
+menu_{your_game_lang}/D3D11/icon (e.g. English = menu_us/D3D11/icon)
 ```
 - Extract your original, unmodified `ffx_ps2` folder from `FFX_Data.vbf` using the [VBF Browser](https://www.nexusmods.com/finalfantasy12/mods/3).
 - Place the extracted `FFX_Data` and `ffx_ps2` folders into the `\original` folder within this release.
