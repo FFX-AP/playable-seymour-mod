@@ -10,53 +10,36 @@ public unsafe partial class SeymourModule : FhModule {
         textString = (byte*)NativeMemory.AllocZeroed((nuint)textUtf8.Length + 1);
         textUtf8.CopyTo(new Span<byte>(textString, textUtf8.Length));
 
+        string[] gear_name_lang = FhGlobal.lang_id switch {
+            FhLangId.German   => _seymour_gear_names_de,
+            FhLangId.French   => _seymour_gear_names_fr,
+            FhLangId.Spanish  => _seymour_gear_names_es,
+            FhLangId.Italian  => _seymour_gear_names_it,
+            FhLangId.Japanese => _seymour_gear_names_jp,
+            FhLangId.Chinese  => _seymour_gear_names_ch,
+            FhLangId.Korean   => _seymour_gear_names_kr,
+            _                 => _seymour_gear_names_en
+        };
+
         for (int i = 0; i < seymour_gear_names.Length; i++) {
-            ReadOnlySpan<byte> weapon_name_utf8 = Encoding.UTF8.GetBytes(_seymour_gear_names[i]);
-            int weapon_name_len = FhEncoding.compute_encode_buffer_size(weapon_name_utf8);
-            void* name_ptr = NativeMemory.AllocZeroed((nuint)weapon_name_len + 1);
-            _ = FhEncoding.encode(weapon_name_utf8, new(name_ptr, weapon_name_len));
+            ReadOnlySpan<byte> gear_name_utf8 = Encoding.UTF8.GetBytes(gear_name_lang[i]);
+            int gear_name_len = FhEncoding.compute_encode_buffer_size(gear_name_utf8);
+            void* name_ptr = NativeMemory.AllocZeroed((nuint)gear_name_len + 1);
+            _ = FhEncoding.encode(gear_name_utf8, new(name_ptr, gear_name_len));
             seymour_gear_names[i] = (nint)name_ptr;
         }
     }
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int CT_RetInt_0171_fillPartyMemberHp(AtelBasicWorker* work, int* storage, AtelStack* stack);
-    private static FhMethodHandle<CT_RetInt_0171_fillPartyMemberHp> _CT_RetInt_0171_fillPartyMemberHp
-        => new(new FhMethodLocation("FFX.exe", 0x45C4F0));
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int CT_RetInt_0172_fillPartyMemberMp(AtelBasicWorker* work, int* storage, AtelStack* stack);
-    private static FhMethodHandle<CT_RetInt_0172_fillPartyMemberMp> _CT_RetInt_0172_fillPartyMemberMp
-        => new(new FhMethodLocation("FFX.exe", 0x45C6B0));
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate byte AtelPushMember();
-    private static FhMethodHandle<AtelPushMember> _AtelPushMember
-        => new(new FhMethodLocation("FFX.exe", 0x46E2A0));
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate byte AtelPopMember();
-    private static FhMethodHandle<AtelPopMember> _AtelPopMember
-        => new(new FhMethodLocation("FFX.exe", 0x46DD40));
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void MsSetSaveStartGame();
-    private static FhMethodHandle<MsSetSaveStartGame> _MsSetSaveStartGame
-        => new(new FhMethodLocation("FFX.exe", 0x386BC0));
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void MsBtlReadManage();
-    private static FhMethodHandle<MsBtlReadManage> _MsBtlReadManage
-        => new(new FhMethodLocation("FFX.exe", 0x3830D0));
-
-
     private ushort* _NkSeymourLegend = FhUtil.ptr_at<ushort>(0x00886D80);
+
+    private uint*  p_DAT_01441c30                       => FhUtil.ptr_at<uint>(0x01441c30);
+    private uint*  p_DAT_01441c34                       => FhUtil.ptr_at<uint>(0x01441c34);
+    private uint*  p_DAT_01441c2c                       => FhUtil.ptr_at<uint>(0x01441c2c);
+    private byte*  p_DAT_01441c14_PauseMenuPlayerList   => FhUtil.ptr_at<byte>(0x01441c14);
+    private uint*  p_DAT_01441c24_PauseMenuFrontlineNum => FhUtil.ptr_at<uint>(0x01441c24);
+    private uint*  p_UINT_01441c1c_PlayerListMax        => FhUtil.ptr_at<uint>(0x01441c1c);
+    private uint*  p_UINT_01441c20_PlayerListMax2       => FhUtil.ptr_at<uint>(0x01441c20);
+    private uint*  p_DAT_01441c28_PauseMenuSelIdx       => FhUtil.ptr_at<uint>(0x01441c28);
+
 
 
     public override bool init(FhModContext mod_context, FileStream global_state_file) {
@@ -65,45 +48,46 @@ public unsafe partial class SeymourModule : FhModule {
         _NkSeymourLegend[2] = 0x8006; // Magic Booster
         _NkSeymourLegend[3] = 0x800D; // One MP Cost
 
-        return _CT_RetInt_0171_fillPartyMemberHp.hook(this, h_CT_RetInt_0171_fillPartyMemberHp)
-            && _CT_RetInt_0172_fillPartyMemberMp.hook(this, h_CT_RetInt_0172_fillPartyMemberMp)
-            && _AtelPushMember                  .hook(this, h_AtelPushMember)
-            && _AtelPopMember                   .hook(this, h_AtelPopMember)
-            && _MsSetSaveStartGame              .hook(this, h_MsSetSaveStartGame)
-            && _MsBtlReadManage                 .hook(this, h_MsBtlReadManage)
-            && _TkMenuDrawMain                  .hook(this, h_TkMenuDrawMain)
-            && _FUN_008c0220                    .hook(this, h_FUN_008c0220)
-            && _FUN_008bc300                    .hook(this, h_FUN_008bc300)
-            && _FUN_008e67f0                    .hook(this, h_FUN_008e67f0)
-            && _DrawCrossMenuIconWeaponName2    .hook(this, h_DrawCrossMenuIconWeaponName2)
-            && _TOBtlDrawCommandWindow          .hook(this, h_TOBtlDrawCommandWindow)
-            && _FUN_008d85f0                    .hook(this, h_FUN_008d85f0)
-            && _MsWeaponName                    .hook(this, h_MsWeaponName)
-            && _FUN_008cf800                    .hook(this, h_FUN_008cf800)
-            && _BattleRewards_AddGear           .hook(this, h_BattleRewards_AddGear)
-            && _MsChangeWeaponInvisible         .hook(this, h_MsChangeWeaponInvisible)
-            && _FUN_008c94b0                    .hook(this, h_FUN_008c94b0)
-            && _FUN_008c9bc0                    .hook(this, h_FUN_008c9bc0)
-            && _FUN_008c9f80                    .hook(this, h_FUN_008c9f80)
-            && _FUN_008ca180                    .hook(this, h_FUN_008ca180)
-            && _FUN_00635c20                    .hook(this, h_FUN_00635c20)
-            && _MsLimitTypeDamageCheck          .hook(this, h_MsLimitTypeDamageCheck)
-            && _MsLimitTypeDeathCheck           .hook(this, h_MsLimitTypeDeathCheck)
-            && _FUN_007b10d0                    .hook(this, h_FUN_007b10d0)
-            && _MsLimitTypeTurnCheck            .hook(this, h_MsLimitTypeTurnCheck)
-            && _MsLimitTypeWinCheck             .hook(this, h_MsLimitTypeWinCheck)
-            && _MsParseCommand                  .hook(this, h_MsParseCommand)
-            && _TOBtlCtrlHelpWin                .hook(this, h_TOBtlCtrlHelpWin)
-            && _TOGetSaveWindow                 .hook(this, h_TOGetSaveWindow)
-            && _TkMenuSummonEnableMask          .hook(this, h_TkMenuSummonEnableMask)
-            && _MsSetSaveParam                  .hook(this, h_MsSetSaveParam)
-            && _MsGetChrAbilityMap              .hook(this, h_MsGetChrAbilityMap);
+        return FhXCall.AtelFn_Std_171_RetI         .hook(this, h_AtelFn_Std_171_RetI_fillPartyMemberHp)
+            && FhXCall.AtelFn_Std_172_RetI         .hook(this, h_AtelFn_Std_172_RetI_fillPartyMemberMp)
+            && FhGCall.AtelPushMember              .hook(this, h_AtelPushMember)
+            && FhGCall.AtelPopMember               .hook(this, h_AtelPopMember)
+            &&         FUN_004a8f40                .hook(this, h_FUN_004a8f40)
+            && FhXCall.MsSetSaveStartGame          .hook(this, h_MsSetSaveStartGame)
+            && FhXCall.MsBtlReadManage             .hook(this, h_MsBtlReadManage)
+            && FhXCall.TkMenuDrawMain              .hook(this, h_TkMenuDrawMain)
+            && FhXCall.FUN_004c0250                .hook(this, h_FUN_004c0250)
+            && FhXCall.FUN_004bc340                .hook(this, h_FUN_004bc340)
+            && FhXCall.FUN_004e67f0                .hook(this, h_FUN_004e67f0)
+            && FhXCall.DrawCrossMenuIconWeaponName2.hook(this, h_DrawCrossMenuIconWeaponName2)
+            && FhXCall.TOBtlDrawCommandWindow      .hook(this, h_TOBtlDrawCommandWindow)
+            && FhXCall.FUN_004d8620                .hook(this, h_FUN_004d8620)
+            && FhXCall.MsWeaponName                .hook(this, h_MsWeaponName)
+            && FhXCall.FUN_004cf830                .hook(this, h_FUN_004cf830)
+            && FhXCall.BattleRewards_AddGear       .hook(this, h_BattleRewards_AddGear)
+            && FhXCall.MsChangeWeaponInvisible     .hook(this, h_MsChangeWeaponInvisible)
+            && FhXCall.FUN_004c94e0                .hook(this, h_FUN_004c94e0)
+            && FhXCall.FUN_004c9bf0                .hook(this, h_FUN_004c9bf0)
+            && FhXCall.FUN_004c9fb0                .hook(this, h_FUN_004c9fb0)
+            && FhXCall.FUN_004ca1b0                .hook(this, h_FUN_004ca1b0)
+            && FhXCall.FUN_00235a70                .hook(this, h_FUN_00235a70)
+            && FhXCall.MsLimitTypeDamageCheck      .hook(this, h_MsLimitTypeDamageCheck)
+            && FhXCall.MsLimitTypeDeathCheck       .hook(this, h_MsLimitTypeDeathCheck)
+            && FhXCall.FUN_003b10c0                .hook(this, h_FUN_003b10c0)
+            && FhXCall.MsLimitTypeTurnCheck        .hook(this, h_MsLimitTypeTurnCheck)
+            && FhXCall.MsLimitTypeWinCheck         .hook(this, h_MsLimitTypeWinCheck)
+            && FhXCall.MsParseCommand              .hook(this, h_MsParseCommand)
+            && FhXCall.TOBtlCtrlHelpWin            .hook(this, h_TOBtlCtrlHelpWin)
+            && FhXCall.TOGetSaveWindow             .hook(this, h_TOGetSaveWindow)
+            && FhXCall.TkMenuSummonEnableMask      .hook(this, h_TkMenuSummonEnableMask)
+            && FhXCall.MsSetSaveParam              .hook(this, h_MsSetSaveParam)
+            &&         MsGetChrAbilityMap          .hook(this, h_MsGetChrAbilityMap);
     }
     public override void load_local_state(FileStream? local_state_file, FhLocalStateInfo local_state_info) { }
     public override void save_local_state(FileStream local_state_file)                                     { }
 
     // If Kimahri gets restored, so does Seymour
-    int h_CT_RetInt_0171_fillPartyMemberHp(AtelBasicWorker* work, int* storage, AtelStack* stack) {
+    int h_AtelFn_Std_171_RetI_fillPartyMemberHp(AtelBasicWorker* work, int* storage, AtelStack* stack) {
         int ply_id;
         PlySave* ply_save;
         PlySave* seymour;
@@ -123,7 +107,7 @@ public unsafe partial class SeymourModule : FhModule {
         return (int)ply_save->max_hp;
     }
 
-    int h_CT_RetInt_0172_fillPartyMemberMp(AtelBasicWorker* work, int* storage, AtelStack* stack) {
+    int h_AtelFn_Std_172_RetI_fillPartyMemberMp(AtelBasicWorker* work, int* storage, AtelStack* stack) {
         int ply_id;
         PlySave* ply_save;
         PlySave* seymour;
@@ -223,9 +207,82 @@ public unsafe partial class SeymourModule : FhModule {
         return bVar1;
     }
 
+    // Pause Menu Player List
+    void h_FUN_004a8f40(uint param_1) {
+        byte bVar1;
+        byte* pbVar2;
+        uint uVar3;
+        int iVar4;
+        uint uVar5;
+        uint uVar6;
+        uint uVar7;
+        byte idx;
+        uint local_c;
+        int local_8;
+        bool joined;
+
+        uVar5 = param_1 & 0xffff0000;
+        *p_DAT_01441c30 = 0;
+        *p_DAT_01441c34 = 0;
+        pbVar2 = MsGetSaveInParty.fnptr!(&local_8);
+        uVar7 = 0;
+        uVar6 = 0;
+        iVar4 = 0;
+        local_c = 0;
+        *p_DAT_01441c2c = 0;
+        if (0 < local_8) {
+            uVar7 = 0;
+            do {
+                bVar1 = pbVar2[iVar4];
+                if (((bVar1 != 0xff)) && (uVar5 != 0x10000)) {
+                    p_DAT_01441c14_PauseMenuPlayerList[uVar6] = bVar1;
+                    uVar3 = (uint)(1 << (pbVar2[iVar4] & 0x1f));
+                    uVar6 = uVar6 + 1;
+                    uVar7 = uVar7 | uVar3;
+                    *p_DAT_01441c2c = *p_DAT_01441c2c | uVar3;
+                }
+                iVar4 = iVar4 + 1;
+            } while (iVar4 < local_8);
+        }
+        *p_DAT_01441c24_PauseMenuFrontlineNum = uVar6;
+        pbVar2 = MsGetSaveOutParty.fnptr!(&local_8);
+        iVar4 = 0;
+        if (0 < local_8) {
+            do {
+                bVar1 = pbVar2[iVar4];
+                if (((bVar1 != 0xff)) && (uVar5 != 0x10000)) {
+                    p_DAT_01441c14_PauseMenuPlayerList[uVar6] = bVar1;
+                    uVar6 = uVar6 + 1;
+                    uVar7 = uVar7 | (uint)(1 << (pbVar2[iVar4] & 0x1f));
+                }
+                iVar4 = iVar4 + 1;
+            } while (iVar4 < local_8);
+        }
+        iVar4 = 0;
+        *p_UINT_01441c1c_PlayerListMax = uVar6;
+        *p_DAT_01441c30 = uVar7;
+        do {
+            idx = (byte)iVar4;
+            joined = FhXCall.MsGetSavePlyJoined.fnptr!(idx);
+            if (joined == true && (uVar5 != 0x10000)) {
+                uVar3 = (uint)(1 << (idx & 0x1f));
+                local_c = local_c | uVar3;
+                if ((uVar7 & uVar3) == 0) {
+                    p_DAT_01441c14_PauseMenuPlayerList[uVar6] = idx;
+                    uVar6 = uVar6 + 1;
+                }
+            }
+            iVar4 = iVar4 + 1;
+        } while (iVar4 < 8);
+        *p_UINT_01441c20_PlayerListMax2 = uVar6;
+        *p_DAT_01441c34 = local_c | uVar7;
+        *p_DAT_01441c28_PauseMenuSelIdx = 0;
+        return;
+    }
+
     // On New Game, initialise Seymour
     void h_MsSetSaveStartGame() {
-        _MsSetSaveStartGame.chain_from(h_MsSetSaveStartGame).fnptr!();
+        FhXCall.MsSetSaveStartGame.chain_from(h_MsSetSaveStartGame).fnptr!();
 
         Globals.save_data->ability_map_limit.has_extra_24 = true;
 
@@ -243,7 +300,7 @@ public unsafe partial class SeymourModule : FhModule {
                     gear->abilities[1] = 0x8000;
                     gear->name_id = FhXCall.MsWeaponNameNum.fnptr!(gear);
                 }
-                _MsWeaponName.fnptr!(gear->name_id, gear->owner, false, &gear->model_id);
+                FhXCall.MsWeaponName.fnptr!(gear->name_id, gear->owner, false, &gear->model_id);
             }
         }
 
@@ -276,7 +333,7 @@ public unsafe partial class SeymourModule : FhModule {
         seymour->limit_mode_ctr_daredevil = 150;
         seymour->limit_mode_ctr_loner = 30;
         seymour->obtained_limit_modes = (OverdriveModeFlags)(uint)OverdriveModeFlags.STOIC;
-        _MsSetSaveParam.fnptr!(7);
+        FhXCall.MsSetSaveParam.fnptr!(7);
 
         Command* requiem = (Command*)FhXCall.MsGetRomPlyCommand.fnptr!(0x30E3, (int*)0x0);
         requiem->is_piercing = true;
@@ -304,17 +361,17 @@ public unsafe partial class SeymourModule : FhModule {
     void h_MsBtlReadManage() {
         int old_state = Globals.Battle.btl->battle_state;
 
-        _MsBtlReadManage.chain_from(h_MsBtlReadManage).fnptr!();
+        FhXCall.MsBtlReadManage.chain_from(h_MsBtlReadManage).fnptr!();
 
         if (Globals.Battle.btl->battle_state != 13 || old_state == Globals.Battle.btl->battle_state) return;
 
         // Post Battle Start
         if (Globals.Battle.player_characters == null) return;
 
-        FhXCall.FUN_0079b480.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_USE, 1);
-        FhXCall.FUN_0079b480.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_SPARE_CHANGE, 1);
-        FhXCall.FUN_0079b480.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_THREATEN, 1);
-        FhXCall.FUN_0079b480.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_PROVOKE, 1);
-        FhXCall.FUN_0079b480.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_BRIBE, 1);
+        FhXCall.FUN_0039b470.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_USE, 1);
+        FhXCall.FUN_0039b470.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_SPARE_CHANGE, 1);
+        FhXCall.FUN_0039b470.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_THREATEN, 1);
+        FhXCall.FUN_0039b470.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_PROVOKE, 1);
+        FhXCall.FUN_0039b470.fnptr!(PlySaveId.PC_SEYMOUR, PlayerCommandId.PCOM_BRIBE, 1);
     }
 }

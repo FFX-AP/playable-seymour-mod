@@ -3,55 +3,9 @@
 namespace Fahrenheit.Mods.Seymour;
 
 public unsafe partial class SeymourModule : FhModule {
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate int MsParseCommand(byte* param_1);
-    private static FhMethodHandle<MsParseCommand> _MsParseCommand
-        => new ( new FhMethodLocation("FFX.exe", 0x3AE380) );
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void TOBtlCtrlHelpWin();
-    private static FhMethodHandle<TOBtlCtrlHelpWin> _TOBtlCtrlHelpWin
-        => new ( new FhMethodLocation("FFX.exe", 0x491250) );
     private byte* p_toBwNum => FhUtil.ptr_at<byte>(0x01fcc092);
 
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate ushort* TOGetSaveWindow(int chr_id, BtlWindowType window_type, int* out_length);
-    private static FhMethodHandle<TOGetSaveWindow> _TOGetSaveWindow
-        => new ( new FhMethodLocation("FFX.exe", 0x49B510) );
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate uint TkMenuSummonEnableMask();
-    private static FhMethodHandle<TkMenuSummonEnableMask> _TkMenuSummonEnableMask
-        => new ( new FhMethodLocation("FFX.exe", 0x4AB190) );
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void MsSetSaveParam(uint chr_id);
-    private static FhMethodHandle<MsSetSaveParam> _MsSetSaveParam
-        => new ( new FhMethodLocation("FFX.exe", 0x3861B0) );
-    private static uint aeon = 0;
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate SphereGridPlyParam* MsGetChrAbilityMap(int chr_id, SaveParam* save_param);
-    private static FhMethodHandle<MsGetChrAbilityMap> _MsGetChrAbilityMap
-        => new ( new FhMethodLocation("FFX.exe", 0x385C20) );
-    [StructLayout(LayoutKind.Explicit, Pack = 4, Size = 0x3C)]
-    public struct SaveParam {
-        [FieldOffset(0x00)] public uint strength;
-        [FieldOffset(0x04)] public uint defense;
-        [FieldOffset(0x08)] public uint magic;
-        [FieldOffset(0x0C)] public uint magic_defense;
-        [FieldOffset(0x10)] public uint agility;
-        [FieldOffset(0x14)] public uint luck;
-        [FieldOffset(0x18)] public uint evasion;
-        [FieldOffset(0x1C)] public uint accuracy;
-        [FieldOffset(0x20)] public uint hp;
-        [FieldOffset(0x24)] public uint mp;
-    }
+    private uint aeon = 0;
 
 
 
@@ -63,11 +17,11 @@ public unsafe partial class SeymourModule : FhModule {
 
         if (*com_id == 0x3130) {
             *com_id = 0x3117;
-            int result = _MsParseCommand.chain_from(h_MsParseCommand).fnptr!(param_1);
+            int result = FhXCall.MsParseCommand.chain_from(h_MsParseCommand).fnptr!(param_1);
             *com_id = 0x3130;
             return result;
         }
-        return _MsParseCommand.chain_from(h_MsParseCommand).fnptr!(param_1);
+        return FhXCall.MsParseCommand.chain_from(h_MsParseCommand).fnptr!(param_1);
     }
 
     // Extra24 Summon Help text
@@ -77,17 +31,17 @@ public unsafe partial class SeymourModule : FhModule {
 
         if (currentwindow->window_command_id == 0x3130) {
             currentwindow->window_command_id = 0x3117;
-            _TOBtlCtrlHelpWin.chain_from(h_TOBtlCtrlHelpWin).fnptr!();
+            FhXCall.TOBtlCtrlHelpWin.chain_from(h_TOBtlCtrlHelpWin).fnptr!();
             currentwindow->window_command_id = 0x3130;
             return;
         }
-        _TOBtlCtrlHelpWin.chain_from(h_TOBtlCtrlHelpWin).fnptr!();
+        FhXCall.TOBtlCtrlHelpWin.chain_from(h_TOBtlCtrlHelpWin).fnptr!();
     }
 
     // Battle Summon List
     ushort* h_TOGetSaveWindow(int chr_id, BtlWindowType window_type, int* out_length) {
         if ((uint)window_type == 5) {
-            ushort* originallist = _TOGetSaveWindow.chain_from(h_TOGetSaveWindow).fnptr!(chr_id, window_type, out_length);
+            ushort* originallist = FhXCall.TOGetSaveWindow.chain_from(h_TOGetSaveWindow).fnptr!(chr_id, window_type, out_length);
             Span<ushort> listSpan = new(originallist, *out_length);
             if (chr_id == 1) {
                 if (!Globals.save_data->has_anima && listSpan.Contains<ushort>(PlySaveId.PC_ANIMA)) {
@@ -122,23 +76,23 @@ public unsafe partial class SeymourModule : FhModule {
                 return originallist;
             }
         }
-        return _TOGetSaveWindow.chain_from(h_TOGetSaveWindow).fnptr!(chr_id, window_type, out_length);
+        return FhXCall.TOGetSaveWindow.chain_from(h_TOGetSaveWindow).fnptr!(chr_id, window_type, out_length);
     }
 
     // Overdrive Mode Menu
     uint h_TkMenuSummonEnableMask() {
         if (FhXCall.TkMenuGetCurrentPlayer.fnptr!() == 1) {
             if (!Globals.save_data->has_anima) {
-                return _TkMenuSummonEnableMask.chain_from(h_TkMenuSummonEnableMask).fnptr!() & ~(1u << 0x0D); // Only display Anima in Yuna's menu once unlocked
+                return FhXCall.TkMenuSummonEnableMask.chain_from(h_TkMenuSummonEnableMask).fnptr!() & ~(1u << 0x0D); // Only display Anima in Yuna's menu once unlocked
             }
         }
-        return _TkMenuSummonEnableMask.chain_from(h_TkMenuSummonEnableMask).fnptr!();
+        return FhXCall.TkMenuSummonEnableMask.chain_from(h_TkMenuSummonEnableMask).fnptr!();
     }
 
     // Make Anima's stats scale with Seymour's
     void h_MsSetSaveParam(uint chr_id) {
         aeon = chr_id;
-        _MsSetSaveParam.chain_from(h_MsSetSaveParam).fnptr!(chr_id);
+        FhXCall.MsSetSaveParam.chain_from(h_MsSetSaveParam).fnptr!(chr_id);
         aeon = 0;
     }
 
@@ -148,19 +102,11 @@ public unsafe partial class SeymourModule : FhModule {
         if (chr_id == 1 && aeon == 0x0D) {
             chr_id = 7; // Scale with Seymour
         }
-        param = _FUN_00798800.fnptr!(chr_id);
-        save_param->hp = Globals.save_data->ply_saves[chr_id].base_hp;
-        save_param->mp = Globals.save_data->ply_saves[chr_id].base_mp;
-        if (chr_id == 7 && aeon == 0x0D) {
-            save_param->strength = 0;
-            save_param->defense  = 0;
-            // Removed Strength & Defense scalings - Anima was too overpowered with them
-            // when using Seymour's stats as a base.
-        }
-        else {
-            save_param->strength  = Globals.save_data->ply_saves[chr_id].base_strength;
-            save_param->defense   = Globals.save_data->ply_saves[chr_id].base_defense;
-        }
+        param = FUN_00798800.fnptr!(chr_id);
+        save_param->hp            = Globals.save_data->ply_saves[chr_id].base_hp;
+        save_param->mp            = Globals.save_data->ply_saves[chr_id].base_mp;
+        save_param->strength      = Globals.save_data->ply_saves[chr_id].base_strength;
+        save_param->defense       = Globals.save_data->ply_saves[chr_id].base_defense;
         save_param->magic         = Globals.save_data->ply_saves[chr_id].base_magic;
         save_param->magic_defense = Globals.save_data->ply_saves[chr_id].base_magic_defense;
         save_param->agility       = Globals.save_data->ply_saves[chr_id].base_agility;
