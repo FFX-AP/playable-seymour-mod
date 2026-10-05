@@ -96,7 +96,7 @@ public unsafe partial class SeymourModule : FhModule {
         aeon = 0;
     }
 
-    SphereGridPlyParam* h_MsGetChrAbilityMap(int chr_id, SaveParam* save_param) {
+    void* h_MsGetChrAbilityMap(int chr_id, void* save_param) {
         SphereGridPlyParam* pMVar1;
 
         uint* save_param_00 = (uint*)save_param;
