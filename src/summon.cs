@@ -97,34 +97,43 @@ public unsafe partial class SeymourModule : FhModule {
     }
 
     SphereGridPlyParam* h_MsGetChrAbilityMap(int chr_id, SaveParam* save_param) {
-        SphereGridPlyParam* param;
+        SphereGridPlyParam* pMVar1;
 
+        uint* save_param_00 = (uint*)save_param;
         if (chr_id == 1 && aeon == 0x0D) {
             chr_id = 7; // Scale with Seymour
         }
-        param = FUN_00798800.fnptr!(chr_id);
-        save_param->hp            = Globals.save_data->ply_saves[chr_id].base_hp;
-        save_param->mp            = Globals.save_data->ply_saves[chr_id].base_mp;
-        save_param->strength      = Globals.save_data->ply_saves[chr_id].base_strength;
-        save_param->defense       = Globals.save_data->ply_saves[chr_id].base_defense;
-        save_param->magic         = Globals.save_data->ply_saves[chr_id].base_magic;
-        save_param->magic_defense = Globals.save_data->ply_saves[chr_id].base_magic_defense;
-        save_param->agility       = Globals.save_data->ply_saves[chr_id].base_agility;
-        save_param->luck          = Globals.save_data->ply_saves[chr_id].base_luck;
-        save_param->evasion       = Globals.save_data->ply_saves[chr_id].base_evasion;
-        save_param->accuracy      = Globals.save_data->ply_saves[chr_id].base_accuracy;
-        if (param != (SphereGridPlyParam*)0x0) {
-            save_param->hp            = save_param->hp            + param->hp * 50;
-            save_param->mp            = save_param->mp            + param->mp * 5;
-            save_param->strength      = save_param->strength      + param->strength;
-            save_param->defense       = save_param->defense       + param->defense;
-            save_param->magic         = save_param->magic         + param->magic;
-            save_param->magic_defense = save_param->magic_defense + param->magic_defense;
-            save_param->agility       = save_param->agility       + param->agility;
-            save_param->luck          = save_param->luck          + param->luck;
-            save_param->evasion       = save_param->evasion       + param->evasion;
-            save_param->accuracy      = save_param->accuracy      + param->accuracy;
+        pMVar1 = FUN_003987f0.fnptr!(chr_id);
+        save_param_00[8] = Globals.save_data->ply_saves[chr_id].base_hp;
+        save_param_00[9] = Globals.save_data->ply_saves[chr_id].base_mp;
+        if (chr_id == 7 && aeon == 0x0D) {
+            *save_param_00 = 0;
+            save_param_00[1] = 0;
+            // Removed Strength & Defense scalings - Anima was too overpowered with them
+            // when using Seymour's stats as a base.
         }
-        return param;
+        else {
+            *save_param_00 = Globals.save_data->ply_saves[chr_id].base_strength;
+            save_param_00[1] = Globals.save_data->ply_saves[chr_id].base_defense;
+        }
+        save_param_00[2] = Globals.save_data->ply_saves[chr_id].base_magic;
+        save_param_00[3] = Globals.save_data->ply_saves[chr_id].base_magic_defense;
+        save_param_00[4] = Globals.save_data->ply_saves[chr_id].base_agility;
+        save_param_00[5] = Globals.save_data->ply_saves[chr_id].base_luck;
+        save_param_00[6] = Globals.save_data->ply_saves[chr_id].base_evasion;
+        save_param_00[7] = Globals.save_data->ply_saves[chr_id].base_accuracy;
+        if (pMVar1 != (SphereGridPlyParam*)0x0) {
+            save_param_00[8] = save_param_00[8] + pMVar1->hp * 0x32;
+            save_param_00[9] = save_param_00[9] + pMVar1->mp * 5;
+            *save_param_00 = *save_param_00 + pMVar1->strength;
+            save_param_00[1] = save_param_00[1] + pMVar1->defense;
+            save_param_00[2] = save_param_00[2] + pMVar1->magic;
+            save_param_00[3] = save_param_00[3] + pMVar1->magic_defense;
+            save_param_00[4] = save_param_00[4] + pMVar1->agility;
+            save_param_00[5] = save_param_00[5] + pMVar1->luck;
+            save_param_00[6] = save_param_00[6] + pMVar1->evasion;
+            save_param_00[7] = save_param_00[7] + pMVar1->accuracy;
+        }
+        return (int*)pMVar1;
     }
 }

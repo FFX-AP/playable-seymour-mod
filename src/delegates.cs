@@ -50,8 +50,8 @@ public unsafe partial class SeymourModule : FhModule {
 
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate SphereGridPlyParam* d_FUN_00798800(int chr_id);
-    public static FhMethodHandle<d_FUN_00798800> FUN_00798800
+    public unsafe delegate SphereGridPlyParam* d_FUN_003987f0(int chr_id);
+    public static FhMethodHandle<d_FUN_003987f0> FUN_003987f0
         => new ( new FhMethodLocation("FFX.exe", 0x3987F0) );
     [StructLayout(LayoutKind.Sequential, Size = 0x1C)]
     public struct SphereGridPlyParam {
@@ -71,26 +71,6 @@ public unsafe partial class SeymourModule : FhModule {
         public byte evasion;
         public byte accuracy;
         public AbilityMap abmap;
-    }
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate SphereGridPlyParam* d_MsGetChrAbilityMap(int chr_id, SaveParam* save_param);
-    private static FhMethodHandle<d_MsGetChrAbilityMap> MsGetChrAbilityMap
-        => new(new FhMethodLocation("FFX.exe", 0x385B60));
-    [StructLayout(LayoutKind.Explicit, Pack = 4, Size = 0x3C)]
-    public struct SaveParam
-    {
-        [FieldOffset(0x00)] public uint strength;
-        [FieldOffset(0x04)] public uint defense;
-        [FieldOffset(0x08)] public uint magic;
-        [FieldOffset(0x0C)] public uint magic_defense;
-        [FieldOffset(0x10)] public uint agility;
-        [FieldOffset(0x14)] public uint luck;
-        [FieldOffset(0x18)] public uint evasion;
-        [FieldOffset(0x1C)] public uint accuracy;
-        [FieldOffset(0x20)] public uint hp;
-        [FieldOffset(0x24)] public uint mp;
     }
 
 
