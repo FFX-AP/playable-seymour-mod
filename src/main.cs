@@ -10,22 +10,12 @@ public unsafe partial class SeymourModule : FhModule {
         textString = (byte*)NativeMemory.AllocZeroed((nuint)textUtf8.Length + 1);
         textUtf8.CopyTo(new Span<byte>(textString, textUtf8.Length));
 
-        string[] gear_name_lang = FhGlobal.lang_id switch {
-            FhLangId.German   => _seymour_gear_names_de,
-            FhLangId.French   => _seymour_gear_names_fr,
-            FhLangId.Spanish  => _seymour_gear_names_es,
-            FhLangId.Italian  => _seymour_gear_names_it,
-            FhLangId.Japanese => _seymour_gear_names_jp,
-            FhLangId.Chinese  => _seymour_gear_names_ch,
-            FhLangId.Korean   => _seymour_gear_names_kr,
-            _                 => _seymour_gear_names_en
-        };
-
+        // TODO: Remove the IMPLICIT_CJK_EXTENSION flag once names are fully translated
         for (int i = 0; i < seymour_gear_names.Length; i++) {
-            ReadOnlySpan<byte> gear_name_utf8 = Encoding.UTF8.GetBytes(gear_name_lang[i]);
-            int gear_name_len = FhEncoding.compute_encode_buffer_size(gear_name_utf8);
-            void* name_ptr = NativeMemory.AllocZeroed((nuint)gear_name_len + 1);
-            _ = FhEncoding.encode(gear_name_utf8, new(name_ptr, gear_name_len));
+            ReadOnlySpan<byte> weapon_name_utf8 = Encoding.UTF8.GetBytes(_seymour_gear_names[i]);
+            int weapon_name_len = FhEncoding.compute_encode_buffer_size(weapon_name_utf8, flags: FhEncodingFlags.IMPLICIT_CJK_EXTENSION);
+            void* name_ptr = NativeMemory.AllocZeroed((nuint)weapon_name_len + 1);
+            _ = FhEncoding.encode(weapon_name_utf8, new(name_ptr, weapon_name_len), flags: FhEncodingFlags.IMPLICIT_CJK_EXTENSION);
             seymour_gear_names[i] = (nint)name_ptr;
         }
     }

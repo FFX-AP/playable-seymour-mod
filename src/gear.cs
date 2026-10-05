@@ -4,6 +4,179 @@ namespace Fahrenheit.Mods.Seymour;
 
 public unsafe partial class SeymourModule : FhModule {
     private static nint[] seymour_gear_names = new nint[171];
+    private static string[] _seymour_gear_names = [
+        "Dimittis",            // Celestial
+        "Scepter",             // Brotherhood
+        "Subduing Scepter",    // Capture
+        "Arcane Scepter",      // 4x Elemental Strikes
+        "Heaven Fall",         // Break Damage Limit
+        "Transcendence",       // Triple Overdrive + Triple AP + Overdrive > AP
+        "Retribution",         // Triple Overdrive + Overdrive > AP
+        "Deliverance",         // Double Overdrive + Double AP
+        "Ferrier of Souls",    // Triple Overdrive
+        "Veil Piercer",        // Double Overdrive
+        "Benediction",         // Triple AP
+        "Rite of the Guado",   // Double AP
+        "Sublimator",          // Overdrive > AP
+        "Fettered Malice",     // SOS Overdrive
+        "Scepter",             // Dummy?
+        "Astral Scepter",      // One MP Cost
+        "Chaos Scepter",       // 4x Status Strikes
+        "Scepter",             // Dummy?
+        "Scepter",             // Dummy?
+        "Master Scepter",      // 4x Strength Bonuses
+        "Wizard's Scepter",    // 4x Magic Bonuses
+        "Mana Scepter",        // 3x Magic +X%s + Magic Booster
+        "Magistral Scepter",   // Half MP Cost
+        "Resplendence",        // Gillionaire
+        "Tri-Scepter",         // At least 3x Elemental Strikes
+        "Malefic Scepter",     // At least 3x Status Strikes
+        "Nemesis Scepter",     // Magic Counter + either Counterattack or Evade & Counter
+        "Karmic Scepter",      // Either Counterattack or Evade & Counter
+        "P-Scepter",           // Distill Power
+        "M-Scepter",           // Distill Mana
+        "S-Scepter",           // Distill Speed
+        "A-Scepter",           // Distill Ability
+        "Prism Scepter",       // Magic Counter
+        "Mirage Scepter",      // Magic Booster
+        "Thaumaturge",         // Alchemy
+        "Sonic Scepter",       // First Strike
+        "Quick Gambit",        // Initiative
+        "Grim Embrace",        // Deathstrike
+        "Halting Grace",       // Slowstrike
+        "Earth Breaker",       // Stonestrike
+        "Serpent's Fang",      // Poisonstrike
+        "Eternal Slumber",     // Sleepstrike
+        "Inhibitor",           // Silencestrike
+        "Nightfall",           // Darkstrike
+        "Monk's Scepter",      // At least 3x Strength +X%s
+        "Priest's Scepter",    // At least 3x Magic +X%s
+        "Dual Scepter",        // At least 2x Element Strikes
+        "Ominous Scepter",     // At least 2x Status Touch's
+        "Atrophy Scepter",     // Deathtouch
+        "Languid Scepter",     // Slowtouch
+        "Break Scepter",       // Stonetouch
+        "Miasma Scepter",      // Poisontouch
+        "Hypno Scepter",       // Sleeptouch
+        "Tranquil Scepter",    // Silencetouch
+        "Twilight Scepter",    // Darktouch
+        "Scout Scepter",       // Sensor
+        "Flame Scepter",       // Firestrike
+        "Frost Scepter",       // Icestrike
+        "Blitz Scepter",       // Lightningstrike
+        "Flood Scepter",       // Waterstrike
+        "Futile Scepter",      // 4x Empty Slots
+        "Force Scepter",       // At least x1 Strength +X% and x1 Magic +X%
+        "Vain Scepter",        // At least 2x Empty Slots
+        "Sorcery Scepter",     // Magic +10% or Magic +20%
+        "Decimator Scepter",   // Strength +10% or Strength +20%
+        "Rune Scepter",        // Magic +5%
+        "Enchanted Scepter",   // Magic +3%
+        "Buster Scepter",      // Strength +5%
+        "Ruin Scepter",        // Strength +3%
+        "Spiked Scepter",      // Piercing
+        "Scepter",             // Else
+        "Scepter",             // Dummy?
+        "Scepter",             // Dummy?
+        "Scepter",             // Dummy?
+        "Resolute",            // Break HP Limit + Break MP Limit
+        "Arcane Circlet",      // Break HP Limit
+        "Mythical Circlet",    // Break MP Limit
+        "Crystal Circlet",     // 4x Element Eaters
+        "Aegis Circlet",       // 4x Element Proofs
+        "Unwavering",          // Auto-Reflect + Auto-Regen + Auto-Protect + Auto-Shell
+        "Renatus",             // Auto-Phoenix + Auto-Med + Auto-Potion
+        "Restorative Circlet", // Auto-Potion + Auto-Med
+        "Omnis",               // 4x Status Proofs
+        "Diamond Circlet",     // 4x Defense +X%s
+        "Ruby Circlet",        // 4x Magic Def +X%s
+        "Empowered Circlet",   // 4x HP +X%s
+        "Magical Circlet",     // 4x MP +X%s
+        "Collector Circlet",   // Master Thief
+        "Treasure Circlet",    // Pickpocket
+        "Circlet of Hope",     // HP Stroll + MP Stroll
+        "Assault Circlet",     // 4x Auto's
+        "Phantom Circlet",     // 3x Element Eaters
+        "Recovery Circlet",    // HP Stroll
+        "Spiritual Circlet",   // MP Stroll
+        "Phoenix Circlet",     // Auto-Phoenix
+        "Curative Circlet",    // Auto-Med
+        "Rainbow Circlet",     // 4x SOS Nuls
+        "Shining Circlet",     // 4x SOS'
+        "Faerie Circlet",      // At least 3x Status Proofs
+        "Peaceful Circlet",    // No Encounters
+        "Shaman Circlet",      // Auto-Potion
+        "Barrier Circlet",     // At least 3x Element Proofs
+        "Star Circlet",        // At least 3x SOS'
+        "Marching Circlet",    // At least 2x Auto's
+        "Moon Circlet",        // At least 2x SOS'
+        "Regen Circlet",       // Auto-Regen or SOS Regen
+        "Haste Circlet",       // Auto-Haste or SOS Haste
+        "Reflect Circlet",     // Auto-Reflect or SOS Reflect
+        "Shell Circlet",       // Auto-Shell or SOS Shell
+        "Protect Circlet",     // Auto-Protect or SOS Protect
+        "Circlet",             // Alchemy
+        "Platinum Circlet",    // At least 3x Defense +X%s
+        "Sapphire Circlet",    // At least 3x Magic Def +X%s
+        "Power Circlet",       // At least 3x HP +X%s
+        "Wizard Circlet",      // At least 3x MP +X%s
+        "Elemental Circlet",   // At least 2x Elemental Proofs or Eaters
+        "Savior Circlet",      // At least 2x Status Proofs
+        "Crimson Circlet",     // Fire Eater
+        "Snow Circlet",        // Ice Eater
+        "Ochre Circlet",       // Lightning Eater
+        "Cerulean Circlet",    // Water Eater
+        "Medical Circlet",     // Curseproof or Curse Ward
+        "Lucid Circlet",       // Confuseproof or Confuse Ward
+        "Serene Circlet",      // Berserkproof or Berserk Ward
+        "Light Circlet",       // Slowproof or Slow Ward
+        "Soul Circlet",        // Deathproof or Death Ward
+        "Blessed Circlet",     // Zombieproof or Zombie Ward
+        "Soft Circlet",        // Stoneproof or Stone Ward
+        "Serum Circlet",       // Poisonproof or Poison Ward
+        "Alert Circlet",       // Sleepproof or Sleep Ward
+        "Echo Circlet",        // Silenceproof or Silence Ward
+        "Bright Circlet",      // Darkproof or Dark Ward
+        "Red Circlet",         // Fireproof or Fire Ward
+        "White Circlet",       // Iceproof or Ice Ward
+        "Yellow Circlet",      // Lightningproof or Lightning Ward
+        "Blue Circlet",        // Waterproof or Water Ward
+        "NulTide Circlet",     // SOS NulTide
+        "NulBlaze Circlet",    // SOS NulBlaze
+        "NulShock Circlet",    // SOS NulShock
+        "NulFrost Circlet",    // SOS NulFrost
+        "Adept's Circlet",     // 4x HP +X%s or MP +X%s
+        "Tetra Circlet",       // 4x Empty Slots
+        "Mythril Circlet",     // At least 1 Def +X% and 1 Magic Def +X%
+        "Gold Circlet",        // At least 2x Def +X%s
+        "Emerald Circlet",     // At least 2x Magic Def +X%s
+        "Vita Circlet",        // At least 2x HP +X%s
+        "Mage's Circlet",      // At least 2x MP +X%s
+        "Silver Circlet",      // Def +10% or Def +20%
+        "Onyx Circlet",        // Magic Def +10% or Magic Def +20%
+        "Sorcery Circlet",     // MP +20% or MP +30%
+        "Tough Circlet",       // HP +20% or MP + 20%
+        "Glorious Circlet",    // 3x Empty Slots
+        "Metal Circlet",       // Def +3% or Def + 5%
+        "Pearl Circlet",       // Magic Def +3% or Magic Def + 5%
+        "Magic Circlet",       // MP +5% or MP + 10%
+        "Seeker's Circlet",    // HP +5% or HP + 10%
+        "Guardian Circlet",    // 2x Empty Slots
+        "Circlet",             // Else
+        "Absolution",          // Ribbon
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "Circlet",             // Dummy?
+        "-",                   // Dummy?
+    ];
 
     private int* p_DAT_0146a62c    => FhUtil.ptr_at<int>(0x0146A62C);
     private int* p_DAT_0146a630    => FhUtil.ptr_at<int>(0x0146A630);
