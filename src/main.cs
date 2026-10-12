@@ -21,15 +21,6 @@ public unsafe partial class SeymourModule : FhModule {
     }
     private ushort* _NkSeymourLegend = FhUtil.ptr_at<ushort>(0x00886D80);
 
-    private uint*  p_DAT_01441c30                       => FhUtil.ptr_at<uint>(0x01441c30);
-    private uint*  p_DAT_01441c34                       => FhUtil.ptr_at<uint>(0x01441c34);
-    private uint*  p_DAT_01441c2c                       => FhUtil.ptr_at<uint>(0x01441c2c);
-    private byte*  p_DAT_01441c14_PauseMenuPlayerList   => FhUtil.ptr_at<byte>(0x01441c14);
-    private uint*  p_DAT_01441c24_PauseMenuFrontlineNum => FhUtil.ptr_at<uint>(0x01441c24);
-    private uint*  p_UINT_01441c1c_PlayerListMax        => FhUtil.ptr_at<uint>(0x01441c1c);
-    private uint*  p_UINT_01441c20_PlayerListMax2       => FhUtil.ptr_at<uint>(0x01441c20);
-    private uint*  p_DAT_01441c28_PauseMenuSelIdx       => FhUtil.ptr_at<uint>(0x01441c28);
-
 
 
     public override bool init(FhModContext mod_context, FileStream global_state_file) {
