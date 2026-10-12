@@ -72,22 +72,4 @@ public unsafe partial class SeymourModule : FhModule {
         public byte accuracy;
         public AbilityMap abmap;
     }
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void d_FUN_004a8f40(uint param_1);
-    public static FhMethodHandle<d_FUN_004a8f40> FUN_004a8f40
-        => new ( new FhMethodLocation("FFX.exe", 0x4A8F40) );
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate byte* d_MsGetSaveInParty(int* out_length);
-    public static FhMethodHandle<d_MsGetSaveInParty> MsGetSaveInParty
-        => new ( new FhMethodLocation("FFX.exe", 0x385270) );
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate byte* d_MsGetSaveOutParty(int* out_length);
-    public static FhMethodHandle<d_MsGetSaveOutParty> MsGetSaveOutParty
-        => new ( new FhMethodLocation("FFX.exe", 0x3852D0) );
 }

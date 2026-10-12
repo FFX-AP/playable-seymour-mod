@@ -42,7 +42,6 @@ public unsafe partial class SeymourModule : FhModule {
             && FhXCall.AtelFn_Std_172_RetI         .hook(this, h_AtelFn_Std_172_RetI_fillPartyMemberMp)
             && FhGCall.AtelPushMember              .hook(this, h_AtelPushMember)
             && FhGCall.AtelPopMember               .hook(this, h_AtelPopMember)
-            &&         FUN_004a8f40                .hook(this, h_FUN_004a8f40)
             && FhXCall.MsSetSaveStartGame          .hook(this, h_MsSetSaveStartGame)
             && FhXCall.MsBtlReadManage             .hook(this, h_MsBtlReadManage)
             && FhXCall.TkMenuDrawMain              .hook(this, h_TkMenuDrawMain)
@@ -195,79 +194,6 @@ public unsafe partial class SeymourModule : FhModule {
         }
         pSVar3->atel_is_push_member = 0;
         return bVar1;
-    }
-
-    // Pause Menu Player List
-    void h_FUN_004a8f40(uint param_1) {
-        byte bVar1;
-        byte* pbVar2;
-        uint uVar3;
-        int iVar4;
-        uint uVar5;
-        uint uVar6;
-        uint uVar7;
-        byte idx;
-        uint local_c;
-        int local_8;
-        bool joined;
-
-        uVar5 = param_1 & 0xffff0000;
-        *p_DAT_01441c30 = 0;
-        *p_DAT_01441c34 = 0;
-        pbVar2 = MsGetSaveInParty.fnptr!(&local_8);
-        uVar7 = 0;
-        uVar6 = 0;
-        iVar4 = 0;
-        local_c = 0;
-        *p_DAT_01441c2c = 0;
-        if (0 < local_8) {
-            uVar7 = 0;
-            do {
-                bVar1 = pbVar2[iVar4];
-                if (((bVar1 != 0xff)) && (uVar5 != 0x10000)) {
-                    p_DAT_01441c14_PauseMenuPlayerList[uVar6] = bVar1;
-                    uVar3 = (uint)(1 << (pbVar2[iVar4] & 0x1f));
-                    uVar6 = uVar6 + 1;
-                    uVar7 = uVar7 | uVar3;
-                    *p_DAT_01441c2c = *p_DAT_01441c2c | uVar3;
-                }
-                iVar4 = iVar4 + 1;
-            } while (iVar4 < local_8);
-        }
-        *p_DAT_01441c24_PauseMenuFrontlineNum = uVar6;
-        pbVar2 = MsGetSaveOutParty.fnptr!(&local_8);
-        iVar4 = 0;
-        if (0 < local_8) {
-            do {
-                bVar1 = pbVar2[iVar4];
-                if (((bVar1 != 0xff)) && (uVar5 != 0x10000)) {
-                    p_DAT_01441c14_PauseMenuPlayerList[uVar6] = bVar1;
-                    uVar6 = uVar6 + 1;
-                    uVar7 = uVar7 | (uint)(1 << (pbVar2[iVar4] & 0x1f));
-                }
-                iVar4 = iVar4 + 1;
-            } while (iVar4 < local_8);
-        }
-        iVar4 = 0;
-        *p_UINT_01441c1c_PlayerListMax = uVar6;
-        *p_DAT_01441c30 = uVar7;
-        do {
-            idx = (byte)iVar4;
-            joined = FhXCall.MsGetSavePlyJoined.fnptr!(idx);
-            if (joined == true && (uVar5 != 0x10000)) {
-                uVar3 = (uint)(1 << (idx & 0x1f));
-                local_c = local_c | uVar3;
-                if ((uVar7 & uVar3) == 0) {
-                    p_DAT_01441c14_PauseMenuPlayerList[uVar6] = idx;
-                    uVar6 = uVar6 + 1;
-                }
-            }
-            iVar4 = iVar4 + 1;
-        } while (iVar4 < 8);
-        *p_UINT_01441c20_PlayerListMax2 = uVar6;
-        *p_DAT_01441c34 = local_c | uVar7;
-        *p_DAT_01441c28_PauseMenuSelIdx = 0;
-        return;
     }
 
     // On New Game, initialise Seymour
