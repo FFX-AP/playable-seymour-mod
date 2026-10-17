@@ -7,8 +7,8 @@ public unsafe partial class SeymourModule : FhModule {
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate void d_graphicDrawUIElement(graphicDrawUIAbmapElement_param1* param_1, byte* param_2, int param_3, int param_4, int param_5);
-    public static FhMethodHandle<d_graphicDrawUIElement> graphicDrawUIElement
-        => new ( new FhMethodLocation("FFX.exe", 0x23EEE0) );
+    public static FhCallHandle<d_graphicDrawUIElement> graphicDrawUIElement
+        => new ( new FhCallLocation("FFX.exe", 0x23EEE0) );
     [StructLayout(LayoutKind.Sequential)]
     public struct graphicDrawUIAbmapElement_param1 {
         public InlineArray4<float> floats0;
@@ -24,8 +24,8 @@ public unsafe partial class SeymourModule : FhModule {
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate void* d_TkMn2GetExcelData(int req_elem_idx, ExcelDataFile* excel_data_ptr);
-    public static FhMethodHandle<d_TkMn2GetExcelData> TkMn2GetExcelData
-        => new ( new FhMethodLocation("FFX.exe", 0x4C1AF0) );
+    public static FhCallHandle<d_TkMn2GetExcelData> TkMn2GetExcelData
+        => new ( new FhCallLocation("FFX.exe", 0x4C1AF0) );
     [StructLayout(LayoutKind.Sequential)]
     public struct ExcelDataFile {
         public ushort chunk_count;
@@ -51,8 +51,8 @@ public unsafe partial class SeymourModule : FhModule {
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public unsafe delegate SphereGridPlyParam* d_FUN_003987f0(int chr_id);
-    public static FhMethodHandle<d_FUN_003987f0> FUN_003987f0
-        => new ( new FhMethodLocation("FFX.exe", 0x3987F0) );
+    public static FhCallHandle<d_FUN_003987f0> FUN_003987f0
+        => new ( new FhCallLocation("FFX.exe", 0x3987F0) );
     [StructLayout(LayoutKind.Sequential, Size = 0x1C)]
     public struct SphereGridPlyParam {
         [InlineArray(12)]

@@ -24,12 +24,6 @@ public unsafe partial class SeymourModule : FhModule {
 
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void d_DrawCrossMenuIconWeaponName2(void* param_1, float x, float y, byte color_id);
-    private static FhMethodHandle<d_DrawCrossMenuIconWeaponName2> DrawCrossMenuIconWeaponName2
-        => new ( new FhMethodLocation("FFX.exe", 0x4E6970) );
-
-
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void updateMenu(IntPtr menu);
 
 
@@ -1436,7 +1430,7 @@ public unsafe partial class SeymourModule : FhModule {
         fVar7 = 0.0f;
         fVar5 = FhXCall.graphicUiRemapY2.fnptr!(231.0f);
         fVar6 = FhXCall.graphicUiRemapX2.fnptr!(1164.0f);
-        DrawCrossMenuIconWeaponName2.fnptr!(&pSVar3->name_id, fVar6, fVar5, (byte)fVar7);
+        FhXCall.DrawCrossMenuIconWeaponName2.fnptr!(&pSVar3->name_id, fVar6, fVar5, (byte)fVar7);
     LAB_008d8976:
         pbVar4 = FhXCall.FUN_004bee50.fnptr!(0x17);
         FhXCall.ToMakeBtlEasyFont.fnptr!(pbVar4, fVar5, fVar6, 0, fVar7);
