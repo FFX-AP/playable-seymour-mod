@@ -31,7 +31,7 @@ menu_{your_game_lang}/D3D11/icon (e.g. English = menu_us/D3D11/icon)
 
 # Features
 This mod makes Seymour his own, standalone, 8th party member. 
-- Access to the Sphere Grid (though he doesn't *currently* have his own path) - Special thanks to Rurusachi
+- Access to the Sphere Grid (though he doesn't *currently* have his own path) - Special thanks to Rurusachi!
 - His own Weapons and Armors, called "Scepters" and "Circlets" respectively, from shops and enemy drops
 - A brand new Overdrive alongside Requiem
 - His own Celestial "Neptune" Crest/Sigil, and also weapon
@@ -50,7 +50,7 @@ Optional, but recommended additions that improve quality of life:
 - My [Requiem Fix](https://www.nexusmods.com/finalfantasyxx2hdremaster/mods/266) to fix Seymour's Overdrive Requiem's camera angling in battles outside of the Sinspawn Gui encounter.
 
 # Final Notes:
-The mod is still a work in progress. There are still things to be addressed, like equipment sorting and abilities that cause softlocks. The mod in its current state is entirely playable, start to finish. Of course, if you find any bugs, please raise an issue here.
+The mod is still a work in progress. There are still things to be addressed (namely abilities that cause softlocks), but the mod in its current state is entirely playable, start to finish. Of course, if you find any bugs, please raise an issue here.
 
 # Made possible thanks to:
 - **[VBF Browser](https://www.nexusmods.com/finalfantasy12/mods/3):** Topher, ffgriever and Vaan
